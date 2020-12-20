@@ -4,7 +4,7 @@ import (
 	"log"
 	"net/http"
 
-	page "github.com/masayuki-0319/gowiki/page"
+	"github.com/masayuki-0319/gowiki/page"
 )
 
 func SetRoute() {
