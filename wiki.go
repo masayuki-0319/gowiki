@@ -15,23 +15,27 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func editHandler(w http.ResponseWriter, r *http.Request) {
-    title := r.URL.Path[len("/edit/"):]
-    p, err := loadPage(title)
-    if err != nil {
-        p = &Page{Title: title}
-    }
-    renderTemplate(w, "edit", p)
+	title := r.URL.Path[len("/edit/"):]
+	p, err := loadPage(title)
+	if err != nil {
+		p = &Page{Title: title}
+	}
+	renderTemplate(w, "edit", p)
 }
 
 func viewHandler(w http.ResponseWriter, r *http.Request) {
-    title := r.URL.Path[len("/view/"):]
-    p, _ := loadPage(title)
-    renderTemplate(w, "view", p)
+	title := r.URL.Path[len("/view/"):]
+	p, err := loadPage(title)
+	if err != nil {
+		http.Redirect(w, r, "/edit/"+title, http.StatusFound)
+		return
+	}
+	renderTemplate(w, "view", p)
 }
 
 func renderTemplate(w http.ResponseWriter, tmpl string, p *Page) {
-    t, _ := template.ParseFiles(tmpl + ".html")
-    t.Execute(w, p)
+	t, _ := template.ParseFiles(tmpl + ".html")
+	t.Execute(w, p)
 }
 
 func main() {
