@@ -88,13 +88,18 @@ type Page struct {
 	Body  []byte
 }
 
+func fullFilePath(fileTitle string) (filename string) {
+	filename = "contents/" + fileTitle + ".txt"
+	return filename
+}
+
 func (p *Page) save() error {
-	filename := "contents/" + p.Title + ".txt"
+	filename := fullFilePath(p.Title)
 	return ioutil.WriteFile(filename, p.Body, 0600)
 }
 
 func loadPage(title string) (*Page, error) {
-	filename := "contents/" + title + ".txt"
+	filename :=fullFilePath(title)
 	body, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
