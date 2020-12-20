@@ -2,19 +2,12 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
 	"net/http"
 	"regexp"
 )
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	title := r.URL.Path[len("/view/"):]
-	p, _ := loadPage(title)
-	fmt.Fprintf(w, "<h1>%s</h1><div>%s</div>", p.Title, p.Body)
-}
 
 var validPath = regexp.MustCompile("^/(edit|save|view)/([a-zA-Z0-9]+)$")
 
@@ -99,7 +92,7 @@ func (p *Page) save() error {
 }
 
 func loadPage(title string) (*Page, error) {
-	filename :=fullFilePath(title)
+	filename := fullFilePath(title)
 	body, err := ioutil.ReadFile(filename)
 	if err != nil {
 		return nil, err
